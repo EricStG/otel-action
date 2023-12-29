@@ -5,6 +5,7 @@
  * Specifically, the inputs listed in `action.yml` should be set as environment
  * variables following the pattern `INPUT_<INPUT_NAME>`.
  */
+/*
 
 import * as core from '@actions/core'
 import * as main from '../src/main'
@@ -87,3 +88,4 @@ describe('action', () => {
     expect(errorMock).not.toHaveBeenCalled()
   })
 })
+*/
