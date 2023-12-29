@@ -1,23 +1,31 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'otel-action'
+description: 'Generates and exports OpenTelemetry spans from GitHub workflow runs'
+author: 'EricStG'
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: 'heart'
-  color: 'red'
+  icon: 'microscope'
+  color: 'grey'
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  attempt:
+    description: 'The attempt number of the run'
     required: true
-    default: '1000'
+  owner:
+    description: 'The owner of the repository where the workflow ran'
+    required: true
+  repo:
+    description: 'The repository where the workflow ran'
+    required: true
+  runId:
+    description: 'The ID of the run to export'
+    required: true
+  token:
+    description: 'The GitHub token to access the run information'
+    required: true
 
-# Define your outputs here.
 outputs:
-  time:
-    description: 'Your output description here'
 
 runs:
   using: node20
