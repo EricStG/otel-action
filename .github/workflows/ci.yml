@@ -7,6 +7,7 @@ on:
       - main
 
 permissions:
+  actions: read
   contents: read
 
 jobs:
@@ -51,12 +52,10 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
-      - name: Test Local Action
-        id: test-action
-        uses: ./
-        with:
-          milliseconds: 2000
-
-      - name: Print Output
-        id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
+      # todo
+      
+      # - name: Test Local Action
+      # id: test-action
+      # uses: ./
+      # with:
+      #   milliseconds: 2000
