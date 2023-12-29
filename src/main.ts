@@ -1,8 +1,8 @@
 import * as core from '@actions/core'
 
-import { ActionLogger } from './actionLogger'
 import { getProvider } from './instrumentation'
 import { generateTraces } from './traceGenerator'
+import { ActionLogger } from './actionLogger'
 
 /**
  * The main function for the action.

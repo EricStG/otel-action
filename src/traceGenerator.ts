@@ -102,7 +102,7 @@ export const generateTraces = async (
 
   let runEndTime = runStartTime
 
-  jobsData.jobs.forEach(job => {
+  for (const job of jobsData.jobs) {
     logger.debug(`Adding job ${job.name}`)
 
     const jobStartTime = Date.parse(job.started_at)
@@ -183,7 +183,7 @@ export const generateTraces = async (
     }
 
     jobSpan.end(jobEndTime)
-  })
+  }
 
   runSpan.end(runEndTime)
 }
