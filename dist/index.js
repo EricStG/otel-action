@@ -62005,6 +62005,7 @@ exports.GithubAttributes = {
     RUN_ATTEMPT: 'github.action.run.attempt',
     RUN_ID: 'github.action.run.id',
     RUN_PATH: 'github.action.run.path',
+    RUN_DISPLAY_TITLE: 'github.action.run.displayTitle',
     STEP_NUMBER: 'github.action.step.number'
 };
 
@@ -62190,13 +62191,14 @@ const generateTraces = async (workflowRun, logger) => {
     runAttributes[attributes_1.GithubAttributes.RUN_ATTEMPT] = workflowRun.attempt;
     runAttributes[attributes_1.GithubAttributes.RUN_ID] = run.id;
     runAttributes[attributes_1.GithubAttributes.RUN_PATH] = run.path;
+    runAttributes[attributes_1.GithubAttributes.RUN_DISPLAY_TITLE] = run.display_title;
     if (run.conclusion) {
         runAttributes[attributes_1.GithubAttributes.CONCLUSION] = run.conclusion;
     }
     if (run.head_branch) {
         runAttributes[attributes_1.GithubAttributes.HEAD_BRANCH] = run.head_branch;
     }
-    const runSpan = runTracer.startSpan(run.display_title, {
+    const runSpan = runTracer.startSpan(run.name ?? run.path, {
         startTime: runStartTime,
         attributes: runAttributes
     });
