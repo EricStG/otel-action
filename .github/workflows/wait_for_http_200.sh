@@ -14,7 +14,7 @@ wait-for-url() {
     timeout --foreground -s TERM 30s bash -c \
         'while [[ "$(curl -s -o /dev/null -m 3 -L -w ''%{http_code}'' ${0})" != "200" ]];\
         do echo "Waiting for ${0}" && sleep 2;\
-        done' ${1}
+        done' "${1}"
     local TIMEOUT_RETURN="$?"
     if [[ "${TIMEOUT_RETURN}" == 0 ]]; then
         echo "OK: ${1}"
@@ -28,7 +28,7 @@ wait-for-url() {
     fi
 }
 
-echo "Wait for URLs: $@"
+echo "Wait for URLs: $*"
 
 for var in "$@"; do
     echo ""
