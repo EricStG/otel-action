@@ -1,0 +1,12 @@
+version: "2"
+
+services:
+
+  collector:
+    image: otel/opentelemetry-collector:latest
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./docker/otel-collector-ci-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "4318:4318"
+      - "13133:13133"

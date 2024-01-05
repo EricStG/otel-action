@@ -1,0 +1,40 @@
+name: Export Traces
+
+on:
+  workflow_run:
+    workflows:
+    - Continuous Integration
+    - Lint Codebase
+    - Check Transpiled JavaScript
+    types:
+      - completed
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  export-traces:
+    name: GitHub Actions Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Start containers
+        id: docker-start
+        run: |
+         docker compose -f docker-compose-ci.yml up -d --quiet-pull         
+         .github/workflows/wait_for_http_200.sh http://localhost:13133
+        
+      - name: Test Local Action
+        id: test-action
+        uses: ./
+        with:
+          attempt: ${{ context.payload.workflow_run.run_attempt }}
+          owner: ${{ context.payload.workflow_run.repository.owner.name }}
+          repo: ${{ context.payload.workflow_run.repository.name }}
+          runId: ${{ context.payload.workflow_run.id }}
+          token: ${{ secrets.GITHUB_TOKEN }}
