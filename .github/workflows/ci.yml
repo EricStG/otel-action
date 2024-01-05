@@ -66,4 +66,4 @@ jobs:
           owner: EricStG
           repo: otel-action
           runId: 7374922069
-        token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
