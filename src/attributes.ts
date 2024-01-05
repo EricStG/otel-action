@@ -14,6 +14,7 @@ export const GithubAttributes = {
   RUN_ATTEMPT: 'github.action.run.attempt',
   RUN_ID: 'github.action.run.id',
   RUN_PATH: 'github.action.run.path',
+  RUN_DISPLAY_TITLE: 'github.action.run.displayTitle',
 
   STEP_NUMBER: 'github.action.step.number'
 }

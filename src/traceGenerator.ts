@@ -58,6 +58,7 @@ export const generateTraces = async (
   runAttributes[GithubAttributes.RUN_ATTEMPT] = workflowRun.attempt
   runAttributes[GithubAttributes.RUN_ID] = run.id
   runAttributes[GithubAttributes.RUN_PATH] = run.path
+  runAttributes[GithubAttributes.RUN_DISPLAY_TITLE] = run.display_title
 
   if (run.conclusion) {
     runAttributes[GithubAttributes.CONCLUSION] = run.conclusion
@@ -66,7 +67,7 @@ export const generateTraces = async (
     runAttributes[GithubAttributes.HEAD_BRANCH] = run.head_branch
   }
 
-  const runSpan = runTracer.startSpan(run.display_title, {
+  const runSpan = runTracer.startSpan(run.name ?? run.path, {
     startTime: runStartTime,
     attributes: runAttributes
   })
