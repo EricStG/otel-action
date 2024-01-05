@@ -40,3 +40,7 @@ jobs:
           repo: ${{ github.event.workflow_run.repository.name }}
           runId: ${{ github.event.workflow_run.id }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Stop containers
+        id: docker-stop
+        run: docker compose down
