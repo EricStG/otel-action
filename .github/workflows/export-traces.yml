@@ -35,7 +35,7 @@ jobs:
         uses: ./
         with:
           attempt: ${{ github.event.workflow_run.run_attempt }}
-          owner: ${{ github.event.workflow_run.repository.owner.name }}
-          repo: ${{ github.event.workflow_run.repository.name }}
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.repository.name }}
           runId: ${{ github.event.workflow_run.id }}
           token: ${{ secrets.GITHUB_TOKEN }}
