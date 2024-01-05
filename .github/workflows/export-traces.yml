@@ -33,8 +33,8 @@ jobs:
         id: test-action
         uses: ./
         with:
-          attempt: ${{ context.payload.workflow_run.run_attempt }}
-          owner: ${{ context.payload.workflow_run.repository.owner.name }}
-          repo: ${{ context.payload.workflow_run.repository.name }}
-          runId: ${{ context.payload.workflow_run.id }}
+          attempt: ${{ github.event.workflow_run.run_attempt }}
+          owner: ${{ github.event.workflow_run.repository.owner.name }}
+          repo: ${{ github.event.workflow_run.repository.name }}
+          runId: ${{ github.event.workflow_run.id }}
           token: ${{ secrets.GITHUB_TOKEN }}
