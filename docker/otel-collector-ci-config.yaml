@@ -5,6 +5,8 @@ receivers:
       http:
 
 exporters:
+  debug:
+
   otlp:
     endpoint: "api.honeycomb.io:443"
     headers:
