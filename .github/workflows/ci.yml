@@ -52,10 +52,18 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
-      # todo
-      
-      # - name: Test Local Action
-      # id: test-action
-      # uses: ./
-      # with:
-      #   milliseconds: 2000
+      - name: Start containers
+        id: docker-start
+        run: |
+         docker compose -f docker-compose.yml up -d --quiet-pull         
+         .github/workflows/wait_for_http_200.sh http://localhost:13133
+        
+      - name: Test Local Action
+        id: test-action
+        uses: ./
+        with:
+          attempt: 1
+          owner: EricStG
+          repo: otel-action
+          runId: 7374922069
+        token: ${{ secrets.GITHUB_TOKEN }}
