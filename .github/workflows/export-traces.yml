@@ -26,6 +26,7 @@ jobs:
       - name: Start containers
         id: docker-start
         run: |
+         docker compose -f docker-compose-ci.yml pull --quiet
          docker compose -f docker-compose-ci.yml up -d --quiet-pull         
          .github/workflows/wait_for_http_200.sh http://localhost:13133
         
