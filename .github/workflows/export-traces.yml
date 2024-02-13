@@ -15,7 +15,30 @@ permissions:
 
 jobs:
   export-traces:
-    name: GitHub Actions Test
+      name: GitHub Actions Test Standalone
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout
+          id: checkout
+          uses: actions/checkout@v4
+
+        - name: Test Local Action
+          id: test-action
+          uses: ./
+          env:
+            OTEL_EXPORTER_OTLP_ENDPOINT: https://api.honeycomb.io
+            OTEL_EXPORTER_OTLP_HEADERS: 
+            OTEL_SERVICE_NAME: otel-action-test
+          with:
+            attempt: ${{ github.event.workflow_run.run_attempt }}
+            owner: ${{ github.event.workflow_run.repository.owner.login }}
+            repo: ${{ github.event.workflow_run.repository.name }}
+            runId: ${{ github.event.workflow_run.id }}
+            token: ${{ secrets.GITHUB_TOKEN }}
+
+  export-traces-docker:
+    name: GitHub Actions Test With Docker Collector
     runs-on: ubuntu-latest
 
     steps:
@@ -44,3 +67,5 @@ jobs:
       - name: Stop containers
         id: docker-stop
         run: docker compose down
+
+  
