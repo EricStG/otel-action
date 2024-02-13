@@ -30,13 +30,17 @@ You can find an example in this repository at [.github/workflows/export-traces.y
 ## Configuration
 
 The action is using [@opentelemetry/exporter-trace-otlp-proto](https://www.npmjs.com/package/@opentelemetry/exporter-trace-otlp-proto).
-As such, you can refer to the [OpenTelemetry Exporter configuration page](https://opentelemetry.io/docs/languages/sdk-configuration/otlp-exporter/) for more information.
+As such, you can refer to the [OpenTelemetry Exporter configuration page](https://opentelemetry.io/docs/languages/sdk-configuration/otlp-exporter/)
+for more information.
 
-alternatively, you can also include an [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) with Docker in your workflow to cover cases that are not supported out of the box.
+alternatively, you can also include an
+[OpenTelemetry Collector](https://opentelemetry.io/docs/collector/)
+with Docker in your workflow to cover cases that are not supported out of the box.
 
 ### GitHub Permissions
 
-The only permission required is `actions: read`, in order to read your workflow's information.
+The only permission required is `actions: read`,
+in order to read your workflow's information.
 
 ## inputs
 
