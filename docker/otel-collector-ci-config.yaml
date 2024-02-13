@@ -11,7 +11,7 @@ exporters:
     endpoint: "api.honeycomb.io:443"
     headers:
       "x-honeycomb-team": "${env:HONEYCOMB_APIKEY}"
-      "x-honeycomb-dataset: otel-action-test-collector"
+      "x-honeycomb-dataset": "otel-action-test-collector"
 
 processors:
   batch:

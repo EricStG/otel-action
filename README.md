@@ -6,7 +6,7 @@ An action to generate and export export workflow runs as OpenTelemetry traces
 > This action is very experimental.
 > While it shouldn't break anything, do set your expectations around stability accordingly.
 
-# How to use
+## How to use
 
 The action is meant to be called after a workflow run has completed. A workflow that triggers on `workflow_run` is a good starting point.
 
@@ -40,12 +40,12 @@ The only permission required is `actions: read`, in order to read your workflow'
 
 All inputs are required
 
-###  attempt
+### attempt
 
 The attempt number of the run
 Usually `${{ github.event.workflow_run.run_attempt }}`
 
-###  owner
+### owner
 
 The owner of the repository where the workflow ran
 Usually `${{ github.event.workflow_run.repository.owner.login }}`
