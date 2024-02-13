@@ -62073,7 +62073,7 @@ const getProvider = () => {
     const otlpExporter = new exporter_trace_otlp_proto_1.OTLPTraceExporter();
     const provider = new sdk_trace_base_1.BasicTracerProvider({
         resource: new resources_1.Resource({
-            [semantic_conventions_1.SemanticResourceAttributes.SERVICE_NAME]: 'otel-action'
+            [semantic_conventions_1.SemanticResourceAttributes.SERVICE_NAME]: process.env.OTEL_SERVICE_NAME ?? 'otel-action'
             // todo: version?
         })
     });

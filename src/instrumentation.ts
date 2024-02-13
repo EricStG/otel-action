@@ -15,7 +15,8 @@ export const getProvider = (): BasicTracerProvider => {
 
   const provider = new BasicTracerProvider({
     resource: new Resource({
-      [SemanticResourceAttributes.SERVICE_NAME]: 'otel-action'
+      [SemanticResourceAttributes.SERVICE_NAME]:
+        process.env.OTEL_SERVICE_NAME ?? 'otel-action'
       // todo: version?
     })
   })
