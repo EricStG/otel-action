@@ -28,7 +28,8 @@ jobs:
           uses: ./
           env:
             OTEL_EXPORTER_OTLP_ENDPOINT: https://api.honeycomb.io
-            OTEL_EXPORTER_OTLP_HEADERS: 
+            OTEL_EXPORTER_OTLP_HEADERS: x-honeycomb-team=${{ secrets.HONEYCOMB_APIKEY }}
+
             OTEL_SERVICE_NAME: otel-action-test
           with:
             attempt: ${{ github.event.workflow_run.run_attempt }}
