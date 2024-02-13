@@ -49,24 +49,29 @@ All inputs are required
 ### `attempt`
 
 The attempt number of the run
+
 Usually `${{ github.event.workflow_run.run_attempt }}`
 
 ### `owner`
 
 The owner of the repository where the workflow ran
+
 Usually `${{ github.event.workflow_run.repository.owner.login }}`
 
 ### `repo`
 
 The repository where the workflow ran
+
 Usually `${{ github.event.workflow_run.repository.name }}`
 
 ### `runId`
 
 The ID of the run to export
+
 Usually `${{ github.event.workflow_run.id }}`
 
 ### `token`
 
 The GitHub token to access the run information
+
 Usually `${{ secrets.GITHUB_TOKEN }}`
