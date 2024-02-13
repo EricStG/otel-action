@@ -58,7 +58,7 @@ jobs:
         id: test-action
         uses: ./
         env:
-          OTEL_SERVICE_NAME: otel-action-test
+          OTEL_SERVICE_NAME: otel-action-test-collector
         with:
           attempt: ${{ github.event.workflow_run.run_attempt }}
           owner: ${{ github.event.workflow_run.repository.owner.login }}
