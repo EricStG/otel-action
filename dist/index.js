@@ -2208,7 +2208,7 @@ var import_graphql = __nccwpck_require__(8467);
 var import_auth_token = __nccwpck_require__(334);
 
 // pkg/dist-src/version.js
-var VERSION = "5.0.2";
+var VERSION = "5.1.0";
 
 // pkg/dist-src/index.js
 var noop = () => {
@@ -5524,7 +5524,7 @@ var import_endpoint = __nccwpck_require__(9440);
 var import_universal_user_agent = __nccwpck_require__(5030);
 
 // pkg/dist-src/version.js
-var VERSION = "8.1.6";
+var VERSION = "8.2.0";
 
 // pkg/dist-src/is-plain-object.js
 function isPlainObject(value) {
@@ -5668,11 +5668,17 @@ async function getResponseData(response) {
 function toErrorMessage(data) {
   if (typeof data === "string")
     return data;
+  let suffix;
+  if ("documentation_url" in data) {
+    suffix = ` - ${data.documentation_url}`;
+  } else {
+    suffix = "";
+  }
   if ("message" in data) {
     if (Array.isArray(data.errors)) {
-      return `${data.message}: ${data.errors.map(JSON.stringify).join(", ")}`;
+      return `${data.message}: ${data.errors.map(JSON.stringify).join(", ")}${suffix}`;
     }
-    return data.message;
+    return `${data.message}${suffix}`;
   }
   return `Unknown error: ${JSON.stringify(data)}`;
 }
@@ -8868,6 +8874,55 @@ exports.globalErrorHandler = globalErrorHandler;
 
 /***/ }),
 
+/***/ 4986:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+/*
+ * Copyright The OpenTelemetry Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.hexToBinary = void 0;
+function intValue(charCode) {
+    // 0-9
+    if (charCode >= 48 && charCode <= 57) {
+        return charCode - 48;
+    }
+    // a-f
+    if (charCode >= 97 && charCode <= 102) {
+        return charCode - 87;
+    }
+    // A-F
+    return charCode - 55;
+}
+function hexToBinary(hexStr) {
+    const buf = new Uint8Array(hexStr.length / 2);
+    let offset = 0;
+    for (let i = 0; i < hexStr.length; i += 2) {
+        const hi = intValue(hexStr.charCodeAt(i));
+        const lo = intValue(hexStr.charCodeAt(i + 1));
+        buf[offset++] = (hi << 4) | lo;
+    }
+    return buf;
+}
+exports.hexToBinary = hexToBinary;
+//# sourceMappingURL=hex-to-binary.js.map
+
+/***/ }),
+
 /***/ 2882:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -9180,6 +9235,7 @@ __exportStar(__nccwpck_require__(9246), exports);
 __exportStar(__nccwpck_require__(2882), exports);
 __exportStar(__nccwpck_require__(6161), exports);
 __exportStar(__nccwpck_require__(7342), exports);
+__exportStar(__nccwpck_require__(4986), exports);
 __exportStar(__nccwpck_require__(7959), exports);
 exports.baggageUtils = __nccwpck_require__(9884);
 __exportStar(__nccwpck_require__(6730), exports);
@@ -9474,16 +9530,13 @@ function getIdGenerator(bytes) {
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getEnv = void 0;
-const os = __nccwpck_require__(2037);
 const environment_1 = __nccwpck_require__(7238);
 /**
  * Gets the environment variables
  */
 function getEnv() {
     const processEnv = (0, environment_1.parseEnvironment)(process.env);
-    return Object.assign({
-        HOSTNAME: os.hostname(),
-    }, environment_1.DEFAULT_ENVIRONMENT, processEnv);
+    return Object.assign({}, environment_1.DEFAULT_ENVIRONMENT, processEnv);
 }
 exports.getEnv = getEnv;
 //# sourceMappingURL=environment.js.map
@@ -9520,7 +9573,7 @@ exports._globalThis = typeof globalThis === 'object' ? globalThis : global;
 /***/ }),
 
 /***/ 5004:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
@@ -9541,38 +9594,9 @@ exports.hexToBase64 = void 0;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-function intValue(charCode) {
-    // 0-9
-    if (charCode >= 48 && charCode <= 57) {
-        return charCode - 48;
-    }
-    // a-f
-    if (charCode >= 97 && charCode <= 102) {
-        return charCode - 87;
-    }
-    // A-F
-    return charCode - 55;
-}
-const buf8 = Buffer.alloc(8);
-const buf16 = Buffer.alloc(16);
+const hex_to_binary_1 = __nccwpck_require__(4986);
 function hexToBase64(hexStr) {
-    let buf;
-    if (hexStr.length === 16) {
-        buf = buf8;
-    }
-    else if (hexStr.length === 32) {
-        buf = buf16;
-    }
-    else {
-        buf = Buffer.alloc(hexStr.length / 2);
-    }
-    let offset = 0;
-    for (let i = 0; i < hexStr.length; i += 2) {
-        const hi = intValue(hexStr.charCodeAt(i));
-        const lo = intValue(hexStr.charCodeAt(i + 1));
-        buf.writeUInt8((hi << 4) | lo, offset++);
-    }
-    return buf.toString('base64');
+    return Buffer.from((0, hex_to_binary_1.hexToBinary)(hexStr)).toString('base64');
 }
 exports.hexToBase64 = hexToBase64;
 //# sourceMappingURL=hex-to-base64.js.map
@@ -11284,7 +11308,7 @@ exports.isWrapped = isWrapped;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.VERSION = void 0;
 // this is autogenerated file, see scripts/version-update.js
-exports.VERSION = '1.19.0';
+exports.VERSION = '1.21.0';
 //# sourceMappingURL=version.js.map
 
 /***/ }),
@@ -11383,7 +11407,7 @@ const USER_AGENT = {
 class OTLPTraceExporter extends otlp_proto_exporter_base_1.OTLPProtoExporterNodeBase {
     constructor(config = {}) {
         super(config);
-        this.headers = Object.assign(Object.assign(Object.assign({}, this.headers), USER_AGENT), core_1.baggageUtils.parseKeyPairsIntoRecord((0, core_1.getEnv)().OTEL_EXPORTER_OTLP_TRACES_HEADERS));
+        this.headers = Object.assign(Object.assign(Object.assign(Object.assign({}, this.headers), USER_AGENT), core_1.baggageUtils.parseKeyPairsIntoRecord((0, core_1.getEnv)().OTEL_EXPORTER_OTLP_TRACES_HEADERS)), config.headers);
     }
     convert(spans) {
         return (0, otlp_transformer_1.createExportTraceServiceRequest)(spans);
@@ -11457,7 +11481,7 @@ Object.defineProperty(exports, "OTLPTraceExporter", ({ enumerable: true, get: fu
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.VERSION = void 0;
 // this is autogenerated file, see scripts/version-update.js
-exports.VERSION = '0.46.0';
+exports.VERSION = '0.48.0';
 //# sourceMappingURL=version.js.map
 
 /***/ }),
@@ -25568,15 +25592,15 @@ const encodeTimestamp = typeof BigInt !== 'undefined' ? encodeAsString : core_1.
 function identity(value) {
     return value;
 }
-function optionalHexToBase64(str) {
+function optionalHexToBinary(str) {
     if (str === undefined)
         return undefined;
-    return (0, core_1.hexToBase64)(str);
+    return (0, core_1.hexToBinary)(str);
 }
 const DEFAULT_ENCODER = {
     encodeHrTime: encodeAsLongBits,
-    encodeSpanContext: core_1.hexToBase64,
-    encodeOptionalSpanContext: optionalHexToBase64,
+    encodeSpanContext: core_1.hexToBinary,
+    encodeOptionalSpanContext: optionalHexToBinary,
 };
 function getOtlpEncoder(options) {
     var _a, _b;
@@ -25587,8 +25611,8 @@ function getOtlpEncoder(options) {
     const useHex = (_b = options.useHex) !== null && _b !== void 0 ? _b : false;
     return {
         encodeHrTime: useLongBits ? encodeAsLongBits : encodeTimestamp,
-        encodeSpanContext: useHex ? identity : core_1.hexToBase64,
-        encodeOptionalSpanContext: useHex ? identity : optionalHexToBase64,
+        encodeSpanContext: useHex ? identity : core_1.hexToBinary,
+        encodeOptionalSpanContext: useHex ? identity : optionalHexToBinary,
     };
 }
 exports.getOtlpEncoder = getOtlpEncoder;
@@ -28011,6 +28035,11 @@ class MeterProvider {
                 this._sharedState.viewRegistry.addView(view);
             }
         }
+        if ((options === null || options === void 0 ? void 0 : options.readers) != null && options.readers.length > 0) {
+            for (const metricReader of options.readers) {
+                this.addMetricReader(metricReader);
+            }
+        }
     }
     /**
      * Get a meter with the configuration of the MeterProvider.
@@ -28031,7 +28060,13 @@ class MeterProvider {
      * Register a {@link MetricReader} to the meter provider. After the
      * registration, the MetricReader can start metrics collection.
      *
+     * <p> NOTE: {@link MetricReader} instances MUST be added before creating any instruments.
+     * A {@link MetricReader} instance registered later may receive no or incomplete metric data.
+     *
      * @param metricReader the metric reader to be registered.
+     *
+     * @deprecated This method will be removed in SDK 2.0. Please use
+     * {@link MeterProviderOptions.readers} via the {@link MeterProvider} constructor instead
      */
     addMetricReader(metricReader) {
         const collector = new MetricCollector_1.MetricCollector(this._sharedState, metricReader);
@@ -32799,13 +32834,13 @@ class Span {
         this.resource = parentTracer.resource;
         this.instrumentationLibrary = parentTracer.instrumentationLibrary;
         this._spanLimits = parentTracer.getSpanLimits();
+        this._attributeValueLengthLimit =
+            this._spanLimits.attributeValueLengthLimit || 0;
         if (attributes != null) {
             this.setAttributes(attributes);
         }
         this._spanProcessor = parentTracer.getActiveSpanProcessor();
         this._spanProcessor.onStart(this, context);
-        this._attributeValueLengthLimit =
-            this._spanLimits.attributeValueLengthLimit || 0;
     }
     spanContext() {
         return this._spanContext;
@@ -32852,7 +32887,9 @@ class Span {
             return this;
         }
         if (this.events.length >= this._spanLimits.eventCountLimit) {
-            api_1.diag.warn('Dropping extra events.');
+            if (this._droppedEventsCount === 0) {
+                api_1.diag.debug('Dropping extra events.');
+            }
             this.events.shift();
             this._droppedEventsCount++;
         }
@@ -32895,6 +32932,9 @@ class Span {
             api_1.diag.warn('Inconsistent start and end time, startTime > endTime. Setting span duration to 0ms.', this.startTime, this.endTime);
             this.endTime = this.startTime.slice();
             this._duration = [0, 0];
+        }
+        if (this._droppedEventsCount > 0) {
+            api_1.diag.warn(`Dropped ${this._droppedEventsCount} events because eventCountLimit reached`);
         }
         this._spanProcessor.onEnd(this);
     }
@@ -33525,7 +33565,7 @@ class BatchSpanProcessorBase {
         const flush = () => {
             this._isExporting = true;
             this._flushOneBatch()
-                .then(() => {
+                .finally(() => {
                 this._isExporting = false;
                 if (this._finishedSpans.length > 0) {
                     this._clearTimer();
@@ -51066,6 +51106,9 @@ function httpRedirectFetch (fetchParams, response) {
   if (!sameOrigin(requestCurrentURL(request), locationURL)) {
     // https://fetch.spec.whatwg.org/#cors-non-wildcard-request-header-name
     request.headersList.delete('authorization')
+
+    // https://fetch.spec.whatwg.org/#authentication-entries
+    request.headersList.delete('proxy-authorization', true)
 
     // "Cookie" and "Host" are forbidden request-headers, which undici doesn't implement.
     request.headersList.delete('cookie')
